@@ -1,6 +1,6 @@
 import express from 'express';
 import connectDB from './connection.js';
-import authRoutes from './routes/auth.js';
+import authRoutes from './routes/auth.routes.js';
 
 const app = express();
 app.use(express.json());
