@@ -1,10 +1,13 @@
 import express from 'express';
 import connectDB from './connection.js';
+import authRoutes from './routes/auth.js';
 
 const app = express();
 app.use(express.json());
 
 connectDB();
+
+app.use('/api/auth', authRoutes);
 
 const PORT = process.env.PORT || 5000;
 
