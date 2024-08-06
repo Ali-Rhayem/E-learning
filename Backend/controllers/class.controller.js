@@ -50,3 +50,16 @@ export const getClassById = async(req,res) =>{
         res.status(500).json({message:"Error fetching class",e})
     }
 }
+
+export const getStudentsByClass = async (req, res) => {
+    const { classId } = req.params;
+    try {
+        const classDetails = await Class.findById(classId).populate('students');
+        if (!classDetails) {
+            return res.status(404).json({ message: "Class Not Found" });
+        }
+        res.status(200).json(classDetails.students);
+    } catch (e) {
+        res.status(500).json({ message: "Error fetching students", e });
+    }
+}
