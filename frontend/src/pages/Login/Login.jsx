@@ -1,30 +1,20 @@
 import React, { useState } from "react";
-import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
-import "./Register.css";
+import { FaUser, FaLock } from "react-icons/fa";
+import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const Register = () => {
-    const [name, setName] = useState("");
+const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
+
     return (
         <div className="auth-page">
-            <div className="form-box register">
+            <div className="form-box login">
                 <form>
-                    <h1>Register</h1>
-                    <div className="input-box">
-                        <input
-                            type="text"
-                            placeholder="Username"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                        />
-                        <FaUser className="icon" />
-                    </div>
+                    <h1>Login</h1>
                     <div className="input-box">
                         <input
                             type="email"
@@ -33,7 +23,7 @@ const Register = () => {
                             onChange={(e) => setEmail(e.target.value)}
                             required
                         />
-                        <FaEnvelope className="icon" />
+                        <FaUser className="icon" />
                     </div>
                     <div className="input-box">
                         <input
@@ -45,12 +35,12 @@ const Register = () => {
                         />
                         <FaLock className="icon" />
                     </div>
-                    <button type="submit">Register</button>
+                    <button type="submit">Login</button>
                     <div className="register-link">
                         <p>
-                            Already have an account?
-                            <button type="button" onClick={() => navigate("/login")} className="link-button">
-                                Login
+                            Don't have an account?
+                            <button type="button" onClick={() => navigate("/register")} className="link-button">
+                                Register
                             </button>
                         </p>
                     </div>
@@ -60,4 +50,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default Login;
