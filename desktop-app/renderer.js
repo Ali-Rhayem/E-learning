@@ -7,32 +7,46 @@ const withdrawalRequestsList = document.getElementById('withdrawal-requests-list
 
 
 async function fetchClasses() {
-    const response = await fetch('http://localhost:5000/api/classes/getAll');
-    const classes = await response.json();
+    classSelect.innerHTML = '';
+    uploadClassSelect.innerHTML = '';
 
-    classes.forEach(cls => {
-        const option = document.createElement('option');
-        option.value = cls._id;
-        option.textContent = cls.title;
-        classSelect.appendChild(option);
+    try {
+        const response = await fetch('http://localhost:5000/api/classes/getAll');
+        const classes = await response.json();
+        
+        classes.forEach(cls => {
+            const option = document.createElement('option');
+            option.value = cls._id;
+            option.textContent = cls.title;
+            classSelect.appendChild(option);
 
-        const uploadOption = document.createElement('option');
-        uploadOption.value = cls._id;
-        uploadOption.textContent = cls.title;
-        uploadClassSelect.appendChild(uploadOption);
-    });
+            const uploadOption = document.createElement('option');
+            uploadOption.value = cls._id;
+            uploadOption.textContent = cls.title;
+            uploadClassSelect.appendChild(uploadOption);
+        });
+    } catch (error) {
+        console.error('Error fetching classes:', error);
+    }
 }
 
 classSelect.addEventListener('change', async () => {
     const classId = classSelect.value;
-    const response = await fetch(`http://localhost:5000/api/classes/${classId}/students`);
-    const students = await response.json();
-    studentsList.innerHTML = '';
-    students.forEach(student => {
-        const li = document.createElement('li');
-        li.textContent = student.username;
-        studentsList.appendChild(li);
-    });
+    try {
+        const response = await fetch(`http://localhost:5000/api/classes/${classId}/students`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch students');
+        }
+        const students = await response.json();
+        studentsList.innerHTML = '';
+        students.forEach(student => {
+            const li = document.createElement('li');
+            li.textContent = student.username;
+            studentsList.appendChild(li);
+        });
+    } catch (error) {
+        console.error('Error fetching students:', error);
+    }
 });
 
 addClassForm.addEventListener('submit', async (event) => {
