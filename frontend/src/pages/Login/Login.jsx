@@ -3,24 +3,46 @@ import { FaUser, FaLock } from "react-icons/fa";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode"; 
 
 const Login = () => {
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState(""); 
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const [error, setError] = useState("");
 
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post("http://localhost:5000/api/auth/login", {
+                username, 
+                password
+            });
+            if (response.status === 200) {
+                const { token } = response.data;
+                localStorage.setItem("token", token); 
+                const decoded = jwtDecode(token); 
+                console.log(decoded);
+                navigate("/dashboard"); 
+            }
+        } catch (err) {
+            setError("Login failed. Please try again.");
+            console.error(err);
+        }
+    };
 
     return (
         <div className="auth-page">
             <div className="form-box login">
-                <form>
+                <form onSubmit={handleLogin}>
                     <h1>Login</h1>
+                    {error && <p className="error-message">{error}</p>}
                     <div className="input-box">
                         <input
-                            type="email"
-                            placeholder="Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            type="text" 
+                            placeholder="Username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                             required
                         />
                         <FaUser className="icon" />
