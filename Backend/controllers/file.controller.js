@@ -12,7 +12,7 @@ if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-    const storage = multer.diskStorage({
+const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, uploadDir);
     },
@@ -21,6 +21,8 @@ if (!fs.existsSync(uploadDir)) {
     },
 });
 const upload = multer({ storage });
+
+export const uploadMiddleware = upload.single('file');
 
 export const uploadFile = async (req, res) => {
     const { classId } = req.body;
@@ -31,7 +33,7 @@ export const uploadFile = async (req, res) => {
         await newFile.save();
         res.status(201).json(newFile);
     } catch (error) {
-        res.status(500).json({ message: 'Error uploading file', error });
+        res.status(500).json({ message: 'Error saving file information', error });
     }
 };
 
@@ -57,5 +59,3 @@ export const downloadFile = async (req, res) => {
         res.status(500).json({ message: 'Error downloading file', error });
     }
 };
-
-export default upload;

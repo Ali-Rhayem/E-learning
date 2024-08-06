@@ -14,7 +14,7 @@ export const createWithdrawalRequest = async (req,res)=>{
 export const getWithdrawalRequestsByClass = async (req, res) => {
     const { classId } = req.params;
     try {
-        const requests = await WithdrawalRequest.find({ classId });
+        const requests = await WithdrawalRequest.find({ classId }).populate('userId').populate('classId');
         res.status(200).json(requests);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching withdrawal requests', error });
@@ -38,3 +38,12 @@ export const updateWithdrawalRequest = async (req,res)=>{
         res.status(500).json({ message: 'Error updating withdrawal request', error });
     }
 }
+
+export const getAllWithdrawalRequests = async (req, res) => {
+    try {
+        const requests = await WithdrawalRequest.find().populate('userId').populate('classId');
+        res.status(200).json(requests);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching all withdrawal requests', error });
+    }
+};
