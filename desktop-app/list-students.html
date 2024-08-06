@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>List Students</title>
     <link rel="stylesheet" href="./output.css">
 </head>
 <body class="flex h-screen">
@@ -33,7 +33,7 @@
         </div>
     </div>
 
-    <div class="flex-1 flex flex-col">
+    <div class="flex-1">
         <div class="bg-white shadow p-4 flex justify-between items-center">
             <div class="text-2xl font-bold">Dashboard</div>
             <div class="flex items-center space-x-4">
@@ -42,29 +42,15 @@
             </div>
         </div>
 
-        <main class="p-4 flex-1 overflow-y-auto">
-            <h2 class="text-2xl font-semibold mb-4">Welcome to the Admin Panel</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <a href="add-class.html" class="block p-4 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-700">
-                    <h3 class="text-xl font-bold mb-2">Add Class</h3>
-                    <p>Create and manage classes.</p>
-                </a>
-                <a href="list-students.html" class="block p-4 bg-green-500 text-white rounded-lg shadow-lg hover:bg-green-700">
-                    <h3 class="text-xl font-bold mb-2">List Students</h3>
-                    <p>View and manage students.</p>
-                </a>
-                <a href="upload-file.html" class="block p-4 bg-yellow-500 text-white rounded-lg shadow-lg hover:bg-yellow-700">
-                    <h3 class="text-xl font-bold mb-2">Upload File</h3>
-                    <p>Upload and manage files.</p>
-                </a>
-                <a href="manage-requests.html" class="block p-4 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-700">
-                    <h3 class="text-xl font-bold mb-2">Manage Requests</h3>
-                    <p>Handle withdrawal requests.</p>
-                </a>
-            </div>
+        <main class="p-4">
+            <h2 class="text-xl font-semibold mb-2">List Students</h2>
+            <select id="class-select" class="select select-bordered w-full mb-2">
+            </select>
+            <ul id="students-list" class="list-disc pl-5">
+            </ul>
         </main>
     </div>
 
-    <script src="./renderer.js"></script>
+    <script src="renderer.js"></script>
 </body>
 </html>
