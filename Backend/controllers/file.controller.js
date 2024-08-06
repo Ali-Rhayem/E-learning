@@ -1,4 +1,5 @@
 import File from '../models/file.model.js';
+import Class from '../models/class.model.js'; // Assuming you have a Class model
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
@@ -31,6 +32,15 @@ export const uploadFile = async (req, res) => {
     try {
         const newFile = new File({ fileName: originalname, filePath, classId });
         await newFile.save();
+
+        const classDoc = await Class.findById(classId);
+        if (!classDoc) {
+            return res.status(404).json({ message: 'Class not found' });
+        }
+
+        classDoc.files.push(newFile._id);
+        await classDoc.save();
+
         res.status(201).json(newFile);
     } catch (error) {
         res.status(500).json({ message: 'Error saving file information', error });
