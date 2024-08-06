@@ -5,22 +5,41 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Register = () => {
-    const [name, setName] = useState("");
+    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const [error, setError] = useState("");
+
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post("http://localhost:5000/api/auth/register", {
+                username,
+                email,
+                password
+            });
+            if (response.status === 201) {
+                navigate("/login");
+            }
+        } catch (err) {
+            setError("Registration failed. Please try again.");
+            console.error(err);
+        }
+    };
 
     return (
         <div className="auth-page">
             <div className="form-box register">
-                <form>
+                <form onSubmit={handleRegister}>
                     <h1>Register</h1>
+                    {error && <p className="error-message">{error}</p>}
                     <div className="input-box">
                         <input
                             type="text"
                             placeholder="Username"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                             required
                         />
                         <FaUser className="icon" />
