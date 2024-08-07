@@ -106,50 +106,55 @@ document.addEventListener('DOMContentLoaded', () => {
   
   function handleManageRequestsPage() {
     const withdrawalRequestsList = document.getElementById('withdrawal-requests-list');
-  
+
     async function fetchWithdrawalRequests() {
       try {
           const response = await fetch('http://localhost:5000/api/withdrawal-requests/getAll');
           const requests = await response.json();
           withdrawalRequestsList.innerHTML = '';
           requests.forEach(request => {
-              const li = document.createElement('li');
-              li.textContent = `Student: ${request.userId.username}, Class: ${request.classId.title}, Status: ${request.status}`;
-              const approveButton = document.createElement('button');
-              approveButton.textContent = 'Approve';
-              approveButton.className = 'text-accent hover:text-success m-2 px-1 py-0.5 text-s'; 
-              approveButton.onclick = async () => {
-                  await updateRequestStatus(request._id, 'approved');
-                  fetchWithdrawalRequests();
-              };
-              const rejectButton = document.createElement('button');
-              rejectButton.textContent = 'Reject';
-              rejectButton.className = 'text-error hover:text-red-700 text-s'
-              rejectButton.onclick = async () => {
-                  await updateRequestStatus(request._id, 'rejected');
-                  fetchWithdrawalRequests();
-              };
-              li.appendChild(approveButton);
-              li.appendChild(rejectButton);
-              withdrawalRequestsList.appendChild(li);
+              if (request.userId && request.classId) {
+                  const li = document.createElement('li');
+                  li.textContent = `Student: ${request.userId.username}, Class: ${request.classId.title}, Status: ${request.status}`;
+                  const approveButton = document.createElement('button');
+                  approveButton.textContent = 'Approve';
+                  approveButton.className = 'text-accent hover:text-success m-2 px-1 py-0.5 text-s'; 
+                  approveButton.onclick = async () => {
+                      await updateRequestStatus(request._id, 'approved');
+                      fetchWithdrawalRequests();
+                  };
+                  const rejectButton = document.createElement('button');
+                  rejectButton.textContent = 'Reject';
+                  rejectButton.className = 'text-error hover:text-red-700 text-s';
+                  rejectButton.onclick = async () => {
+                      await updateRequestStatus(request._id, 'rejected');
+                      fetchWithdrawalRequests();
+                  };
+                  li.appendChild(approveButton);
+                  li.appendChild(rejectButton);
+                  withdrawalRequestsList.appendChild(li);
+              } else {
+                  console.warn('Missing userId or classId in request:', request);
+              }
           });
       } catch (error) {
           console.error('Failed to fetch withdrawal requests:', error);
       }
-    }
-  
-    async function updateRequestStatus(requestId, status) {
-      await fetch(`http://localhost:5000/api/withdrawal-requests/${requestId}`, {
-          method: 'PUT',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ status }),
-      });
-    }
-  
-    fetchWithdrawalRequests();
   }
+  
+
+    async function updateRequestStatus(requestId, status) {
+        await fetch(`http://localhost:5000/api/withdrawal-requests/${requestId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status }),
+        });
+    }
+
+    fetchWithdrawalRequests();
+}
   
   async function fetchClasses() {
     const classSelect = document.getElementById('class-select');
