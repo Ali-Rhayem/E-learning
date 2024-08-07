@@ -1,6 +1,9 @@
 import User from '../models/user.model.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export const registerUser = async (req, res) => {
     const { username, password, email } = req.body;
@@ -19,7 +22,7 @@ export const loginUser = async (req, res) => {
     try {
         const user = await User.findOne({ username });
         if (user && await bcrypt.compare(password, user.password)) {
-            const token = jwt.sign({ userId: user._id, username: user.username, role: user.role }, 'secret');
+            const token = jwt.sign({ userId: user._id, username: user.username, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
             res.json({ token });
         } else {
             res.sendStatus(401);
