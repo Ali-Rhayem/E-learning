@@ -19,7 +19,7 @@ export const loginUser = async (req, res) => {
     try {
         const user = await User.findOne({ username });
         if (user && await bcrypt.compare(password, user.password)) {
-            const token = jwt.sign({ userId: user._id, role: user.role }, 'secret');
+            const token = jwt.sign({ userId: user._id, username: user.username, role: user.role }, 'secret');
             res.json({ token });
         } else {
             res.sendStatus(401);
