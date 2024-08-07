@@ -8,20 +8,33 @@ const AllClasses = () => {
   const dispatch = useDispatch();
   const classes = useSelector((state) => state.classes.filteredClasses);
   const user = useSelector((state) => state.user.user);
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     const fetchClasses = async () => {
-      const response = await axios.get('http://localhost:5000/api/classes/getAll');
-      dispatch(setClasses(response.data));
+      try {
+        const response = await axios.get('http://localhost:5000/api/classes/getAll', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        dispatch(setClasses(response.data));
+      } catch (error) {
+        console.error('Error fetching classes:', error);
+      }
     };
     fetchClasses();
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   const handleEnroll = async (classId) => {
     if (user) {
       try {
         console.log('Enrolling user:', user.id);
-        await axios.post(`http://localhost:5000/api/classes/${classId}/enroll`, { studentId: user.id });
+        await axios.post(`http://localhost:5000/api/classes/${classId}/enroll`, { studentId: user.id }, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         dispatch(enrollClass(classId));
         alert('Enrolled successfully!');
       } catch (error) {
