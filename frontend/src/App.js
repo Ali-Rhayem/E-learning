@@ -18,12 +18,12 @@ function App() {
         <Navbar />
         <div>
           <Routes>
-            <Route path="/Home" element={<Home />} />
-            <Route path="/Register" element={<Register />} />
-            <Route path="/Login" element={<Login />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/all-classes" element={<AllClasses />} />
-            {/* <Route path="/my-classes" element={<MyClasses />} /> */}
-            {/* <Route path="/class-files/:classId" element={<ClassFiles />} /> */}
+            <Route path="/my-classes" element={<MyClasses />} />
+            <Route path="/class-files/:classId" element={<ClassFiles />} />
           </Routes>
         </div>
       </Router>

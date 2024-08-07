@@ -3,13 +3,16 @@ import { FaUser, FaLock } from "react-icons/fa";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode"; 
+import {jwtDecode} from "jwt-decode"; 
+import { useDispatch } from 'react-redux';
+import { setUser, setEnrolledClasses } from '../../redux/userSlice';
 
 const Login = () => {
     const [username, setUsername] = useState(""); 
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
     const [error, setError] = useState("");
+    const dispatch = useDispatch();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -22,12 +25,18 @@ const Login = () => {
                 const { token } = response.data;
                 localStorage.setItem("token", token); 
                 const decoded = jwtDecode(token); 
-                console.log(decoded);
-                navigate("/dashboard"); 
+                console.log('Token decoded:', decoded);
+                dispatch(setUser({ id: decoded.userId, username: decoded.username }));
+
+                const classResponse = await axios.get(`http://localhost:5000/api/classes/student/${decoded.userId}/classes`);
+                console.log('Classes fetched:', classResponse.data);
+                dispatch(setEnrolledClasses(classResponse.data));
+
+                navigate("/my-classes"); 
             }
         } catch (err) {
             setError("Login failed. Please try again.");
-            console.error(err);
+            console.error('Login error:', err);
         }
     };
 
