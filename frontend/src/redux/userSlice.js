@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  user: null,
+  user: JSON.parse(localStorage.getItem('user')) || null,
   enrolledClasses: [],
 };
 
@@ -12,6 +12,7 @@ const userSlice = createSlice({
     setUser: (state, action) => {
       console.log('Setting user:', action.payload);
       state.user = action.payload;
+      localStorage.setItem('user', JSON.stringify(action.payload));  // Persist user state in local storage
     },
     enrollClass: (state, action) => {
       console.log('Enrolling class:', action.payload);

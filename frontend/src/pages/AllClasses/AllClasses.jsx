@@ -1,4 +1,3 @@
-// AllClasses.js
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setClasses } from '../../redux/classSlice';
@@ -20,8 +19,17 @@ const AllClasses = () => {
 
   const handleEnroll = async (classId) => {
     if (user) {
-      await axios.post(`http://localhost:5000/api/classes/${classId}/enroll`, { studentId: user._id });
-      dispatch(enrollClass(classId));
+      try {
+        console.log('Enrolling user:', user.id);
+        await axios.post(`http://localhost:5000/api/classes/${classId}/enroll`, { studentId: user.id });
+        dispatch(enrollClass(classId));
+        alert('Enrolled successfully!');
+      } catch (error) {
+        console.error('Error enrolling in class:', error);
+        alert('Failed to enroll. Please try again.');
+      }
+    } else {
+      alert('Please log in to enroll in a class.');
     }
   };
 

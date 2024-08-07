@@ -32,7 +32,7 @@ const Login = () => {
                 console.log('Classes fetched:', classResponse.data);
                 dispatch(setEnrolledClasses(classResponse.data));
 
-                navigate("/my-classes"); 
+                navigate("/all-classes"); 
             }
         } catch (err) {
             setError("Login failed. Please try again.");
