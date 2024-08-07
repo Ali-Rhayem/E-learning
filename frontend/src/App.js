@@ -8,7 +8,7 @@ import Login from './pages/Login/Login.jsx';
 import Home from './pages/home/home.jsx';
 import AllClasses from './pages/AllClasses/AllClasses.jsx';
 import MyClasses from './pages/MyClasses/MyClasses.jsx';
-import ClassFiles from './pages/ClassFiles';
+import ClassFiles from './pages/ClassFiles/ClassFiles.jsx';
 import Navbar from './components/Navbar/Navbar.jsx';
 
 function App() {
@@ -22,8 +22,8 @@ function App() {
             <Route path="/Register" element={<Register />} />
             <Route path="/Login" element={<Login />} />
             <Route path="/all-classes" element={<AllClasses />} />
-            <Route path="/my-classes" element={<MyClasses />} />
-            <Route path="/class-files/:classId" element={<ClassFiles />} />
+            {/* <Route path="/my-classes" element={<MyClasses />} /> */}
+            {/* <Route path="/class-files/:classId" element={<ClassFiles />} /> */}
           </Routes>
         </div>
       </Router>
