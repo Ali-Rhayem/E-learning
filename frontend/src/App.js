@@ -44,9 +44,13 @@ const AppWrapper = () => {
           <Route path="/home" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/all-classes" element={<ProtectedRoute element={<AllClasses />}/> } />
-          <Route path="/my-classes" element={<ProtectedRoute element={<MyClasses/>} />} />
-          <Route path="/class-files/:classId" element={<ProtectedRoute element={<ClassFiles/>} />} />
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/all-classes" element={<AllClasses />} />  
+            <Route path="/my-classes" element={<MyClasses />} />
+            <Route path="/class-files/:classId" element={<ClassFiles />} />
+          </Route>
+
           <Route path="*" element={<Navigate to="/home" />} />
         </Routes>
       </div>
