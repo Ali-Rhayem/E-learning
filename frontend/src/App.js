@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Provider, useDispatch } from 'react-redux';
 import { store } from './redux/store';
 import Register from './pages/Register/Register.jsx';
@@ -15,17 +15,25 @@ import {jwtDecode} from 'jwt-decode';
 
 const AppWrapper = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
     if (token) {
-      const decoded = jwtDecode(token);
-      dispatch(setUser({ id: decoded.userId, username: decoded.username, role: decoded.role }));
-    } else {
-      navigate('/login');
+      try {
+        const decoded = jwtDecode(token);
+        dispatch(setUser({ id: decoded.userId, username: decoded.username, role: decoded.role }));
+      } catch (error) {
+        console.error('Invalid token:', error);
+        localStorage.removeItem('token');
+      }
     }
-  }, [dispatch, navigate]);
+    setLoading(false);
+  }, [dispatch, token]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
@@ -35,9 +43,10 @@ const AppWrapper = () => {
           <Route path="/home" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/all-classes" element={<AllClasses />} />
+          <Route path="/all-classes" element={<AllClasses /> } />
           <Route path="/my-classes" element={<MyClasses />} />
-          <Route path="/class-files/:classId" element={<ClassFiles />} />
+          <Route path="/class-files/:classId" element={ <ClassFiles />} />
+          <Route path="*" element={<Navigate to="/home" />} />
         </Routes>
       </div>
     </div>

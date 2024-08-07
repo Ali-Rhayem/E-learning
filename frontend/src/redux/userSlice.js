@@ -10,26 +10,26 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      console.log('Setting user:', action.payload);
       state.user = action.payload;
-      localStorage.setItem('user', JSON.stringify(action.payload));  // Persist user state in local storage
+      localStorage.setItem('user', JSON.stringify(action.payload));
+    },
+    logoutUser: (state) => {
+      state.user = null;
+      localStorage.removeItem('user');
     },
     enrollClass: (state, action) => {
-      console.log('Enrolling class:', action.payload);
       state.enrolledClasses.push(action.payload);
     },
     withdrawClass: (state, action) => {
-      console.log('Withdrawing from class:', action.payload);
       state.enrolledClasses = state.enrolledClasses.filter(
         (classId) => classId !== action.payload
       );
     },
     setEnrolledClasses: (state, action) => {
-      console.log('Setting enrolled classes:', action.payload);
       state.enrolledClasses = action.payload;
     },
   },
 });
 
-export const { setUser, enrollClass, withdrawClass, setEnrolledClasses } = userSlice.actions;
+export const { setUser, logoutUser, enrollClass, withdrawClass, setEnrolledClasses } = userSlice.actions;
 export default userSlice.reducer;
