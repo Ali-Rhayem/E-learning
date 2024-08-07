@@ -13,7 +13,7 @@ import { authenticateToken } from '../middleware/auth.middleware.js';
 const router = express.Router();
 
 router.post("/create", createClass);
-router.get("/getAll",authenticateToken, getAllClasses);
+router.get("/getAll", getAllClasses);
 router.post('/:classId/enroll',authenticateToken, enrollStudent);
 router.post('/:classId/getClass',authenticateToken, getClassById);
 router.get('/:classId/students', getStudentsByClass);
