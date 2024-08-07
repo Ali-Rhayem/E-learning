@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const AllClasses = () => {
   const dispatch = useDispatch();
-  const classes = useSelector((state) => state.classes.classes);
+  const classes = useSelector((state) => state.classes.filteredClasses);
   const user = useSelector((state) => state.user.user);
 
   useEffect(() => {

@@ -8,7 +8,7 @@ import {jwtDecode} from 'jwt-decode';
 const MyClasses = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
-  const enrolledClasses = useSelector((state) => state.user.enrolledClasses);
+  const enrolledClasses = useSelector((state) => state.user.filteredEnrolledClasses);
   const navigate = useNavigate();
 
   useEffect(() => {
