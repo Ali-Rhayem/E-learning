@@ -91,3 +91,30 @@ export const getClassesByStudentId = async (req, res) => {
         res.status(500).json({ message: "Error fetching classes", e });
     }
 };
+
+export const removeStudent = async (req, res) => {
+    const { classId, studentId } = req.params;
+
+    try {
+        const classToUpdate = await Class.findById(classId);
+        const student = await User.findById(studentId);
+
+        if (!classToUpdate) {
+            return res.status(404).json({ message: "Class not found" });
+        }
+
+        if (!student) {
+            return res.status(404).json({ message: "Student not found" });
+        }
+
+        classToUpdate.students = classToUpdate.students.filter(id => id.toString() !== studentId);
+        await classToUpdate.save();
+
+        student.enrolledClasses = student.enrolledClasses.filter(id => id.toString() !== classId);
+        await student.save();
+
+        res.status(200).json({ message: "Student removed from class" });
+    } catch (e) {
+        res.status(500).json({ message: "error removing student", e });
+    }
+};
