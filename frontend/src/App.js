@@ -5,7 +5,6 @@ import { Provider, useDispatch } from 'react-redux';
 import { store } from './redux/store';
 import Register from './pages/Register/Register.jsx';
 import Login from './pages/Login/Login.jsx';
-import Home from './pages/home/home.jsx';
 import AllClasses from './pages/AllClasses/AllClasses.jsx';
 import MyClasses from './pages/MyClasses/MyClasses.jsx';
 import ClassFiles from './pages/ClassFiles/ClassFiles.jsx';
@@ -41,7 +40,6 @@ const AppWrapper = () => {
       <Navbar />
       <div>
         <Routes>
-          <Route path="/home" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
 
@@ -51,7 +49,7 @@ const AppWrapper = () => {
             <Route path="/class-files/:classId" element={<ClassFiles />} />
           </Route>
 
-          <Route path="*" element={<Navigate to="/home" />} />
+          <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </div>
     </div>
